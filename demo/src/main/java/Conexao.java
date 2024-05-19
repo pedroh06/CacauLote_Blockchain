@@ -17,12 +17,12 @@ public class Conexao {
         Connection conexao = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conexao = DriverManager.getConnection("jdbc:mysql://localhost/cacaulotedb", "pedro", "cacau#Lote");
-            ResultSet rsBlocoGenesis = conexao.createStatement().executeQuery("SELECT * FROM blocogenesis");
+            conexao = DriverManager.getConnection("jdbc:mysql://cacau-lote-db.mysql.database.azure.com:3306/cacaulotedb", "user", "cacau#Lote");
+            ResultSet rsBlocoGenesis = conexao.createStatement().executeQuery("SELECT * FROM bloco_Genesis");
             while (rsBlocoGenesis.next()) {
                 String proprietario = rsBlocoGenesis.getString("nome_proprietario");
-                double latitude = rsBlocoGenesis.getDouble("latitude");
-                double longitude = rsBlocoGenesis.getDouble("longitude");
+                double latitude = rsBlocoGenesis.getDouble("latitude_plantacao");
+                double longitude = rsBlocoGenesis.getDouble("longitude_plantacao");
 
                 System.out.println("Proprietario : " + proprietario);
                 System.out.println("Latitude : " + latitude);
