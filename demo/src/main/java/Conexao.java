@@ -8,7 +8,7 @@ public class Conexao {
 
     public static void main(String[] args) {
 
-        String url = "jdbc:mysql://40.114.43.74:3306/teste_db?useSSL=true";
+        String url = "jdbc:mysql://cacau-lote-db.mysql.database.azure.com:3306/teste_db?useSSL=true"; //teste
         String user = "user";
         String password = "cacau#Lote";
 
