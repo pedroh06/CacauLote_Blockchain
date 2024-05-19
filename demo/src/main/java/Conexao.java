@@ -8,7 +8,7 @@ public class Conexao {
 
     public static void main(String[] args) {
 
-        String url = "jdbc:mysql://localhost:3306/cacaulotedb";
+        String url = "jdbc:mysql://localhost/cacaulotedb";
         String user = "root";
         String password = "2525";
 
