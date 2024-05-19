@@ -19,7 +19,7 @@ public class Conexao {
         Connection conexao = null;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:mysql://localhost/cacaulotedb", "root", "2525");
             ResultSet rsBlocoGenesis = conexao.createStatement().executeQuery("SELECT * FROM blocoGenesis");
             while (rsBlocoGenesis.next()) {
