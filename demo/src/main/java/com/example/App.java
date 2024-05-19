@@ -1,3 +1,4 @@
+package com.example;
 public class App {
     public static void main(String[] args) throws Exception {
         Blockchain blockchain = new Blockchain();
