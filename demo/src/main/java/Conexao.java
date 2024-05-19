@@ -30,7 +30,7 @@ public class Conexao {
             }
 
         } catch (ClassNotFoundException ex) {
-            System.out.println("Driver do banco de dados não localizado");
+            System.out.println("Driver do banco de dados não localizado: " + ex.getMessage());
         } catch (SQLException ex) {
             System.out.println("Ocorreu um erro ao acessar o banco: " + ex.getMessage());
         } finally {
