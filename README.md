@@ -12,3 +12,4 @@ mvn exec:java -Dexec.mainClass="com.example.App"
 obs:
 - esteja em demo/ para rodar o mvn
 - esteja em cacauLote_BLockchain/ para qualquer comando git
+- caso o programa na vm não aceite git pull, faça um git reset --hard origin/main
