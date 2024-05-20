@@ -1,4 +1,5 @@
 package com.example;
+
 import java.util.ArrayList;
 
 class Blockchain {
@@ -6,17 +7,21 @@ class Blockchain {
 
     public Blockchain() {
         blockchain = new ArrayList<>();
-        blockchain.add(new Block(0, "0", "Charles Ygara", -1.5029129751802872, -48.44701669211251));
+    }
+
+    public Blockchain(String owner, String cpf, double latitude, double longitude, String plantacionInfos) {
+        blockchain = new ArrayList<>();
+        blockchain.add(new Block(0, "0", owner, cpf, latitude, longitude, plantacionInfos));
     }
 
     public Block getLastBlock() {
         return blockchain.get(blockchain.size() - 1);
     }
 
-    public void addBlock(String data) {
+    public void addBlock(String infos) {
         Block previousBlock = getLastBlock();
         int newIndex = previousBlock.getIndex() + 1;
-        blockchain.add(new Block(newIndex, previousBlock.getHash(), data));
+        blockchain.add(new Block(newIndex, previousBlock.getHash(), infos));
     }
 
     public boolean isChainValid() {

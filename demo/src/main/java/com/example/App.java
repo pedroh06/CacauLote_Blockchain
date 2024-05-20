@@ -9,29 +9,26 @@ public class App {
     public static void main(String[] args) throws Exception {
         Blockchain blockchain = new Blockchain();
 
-        blockchain.addBlock("Responsável 1");
-        blockchain.addBlock("Responsável 2");
-        blockchain.addBlock("Responsável 3");
-        blockchain.addBlock("Responsável 4");
-        blockchain.addBlock("Responsável 5");
-
-        for (Block bloco : blockchain.getBlockchain()) {
-            System.out.println(bloco.imprimirBloco());
-        }
-
         Connection conexao = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:mysql://cacau-lote-db.mysql.database.azure.com:3306/cacaulotedb", "user", "cacau#Lote");
+
             ResultSet rsBlocoGenesis = conexao.createStatement().executeQuery("SELECT * FROM bloco_Genesis");
-            while (rsBlocoGenesis.next()) {
+            if (rsBlocoGenesis.next()) {
                 String proprietario = rsBlocoGenesis.getString("nome_proprietario");
+                String cpf = rsBlocoGenesis.getString("cpf_proprietario");
                 double latitude = rsBlocoGenesis.getDouble("latitude_plantacao");
                 double longitude = rsBlocoGenesis.getDouble("longitude_plantacao");
+                String plantacaoInfos = rsBlocoGenesis.getString("informacoes");
 
-                System.out.println("Proprietario : " + proprietario);
-                System.out.println("Latitude : " + latitude);
-                System.out.println("Longitude : " + longitude);
+                blockchain = new Blockchain(proprietario, cpf, latitude, longitude, plantacaoInfos);
+            }
+
+            ResultSet rsBlocos = conexao.createStatement().executeQuery("SELECT * FROM blocos ORDER BY id");
+            while (rsBlocos.next()) {
+                String infos = rsBlocos.getString("informacoes");
+                blockchain.addBlock(infos);
             }
 
         } catch (ClassNotFoundException ex) {
@@ -42,6 +39,10 @@ public class App {
             if (conexao != null) {
                 conexao.close();
             }
+        }
+
+        for (Block bloco : blockchain.getBlockchain()) {
+            System.out.println(bloco.imprimirBloco());
         }
     }
 }

@@ -1,4 +1,5 @@
 package com.example;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -9,37 +10,62 @@ public class Block {
     private long timestamp;
     private String previousHash;
     private String hash;
-    private String newOwner;
+    private String infos;
     private String owner;
+    private String cpf;
     private double latitude;
     private double longitude;
+    private String plantacionInfos;
 
-    public Block(int index, String previousHash, String owner, double latitude, double longitude) {
+    public Block(int index, String previousHash, String owner, String cpf, double latitude, double longitude, String plantacionInfos) {
         this.index = index;
         this.timestamp = new Date().getTime();
         this.previousHash = previousHash;
         this.owner = owner;
+        this.cpf = cpf;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.hash = generateHash();
+        this.plantacionInfos = plantacionInfos;
+        this.hash = generateGenesisHash();
     }
 
-    public Block(int index, String previousHash, String newOwner) {
+    public Block(int index, String previousHash, String infos) {
         this.index = index;
         this.timestamp = new Date().getTime();
         this.previousHash = previousHash;
-        this.newOwner = newOwner;
+        this.infos = infos;
         this.hash = generateHash();
     }
 
-    public String generateHash() {
-        String newOwnerToHash = index + timestamp + previousHash + owner + latitude + longitude;
+    public String generateGenesisHash() {
+        String hash = index + timestamp + previousHash + owner + cpf + latitude + longitude + plantacionInfos;
         MessageDigest digest;
         StringBuilder hexString = new StringBuilder();
 
         try {
             digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(newOwnerToHash.getBytes());
+            byte[] hashBytes = digest.digest(hash.getBytes());
+
+            for (byte hashByte : hashBytes) {
+                String hex = Integer.toHexString(0xff & hashByte);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return hexString.toString();
+    }
+
+    public String generateHash() {
+        String hash = index + timestamp + previousHash + infos;
+        MessageDigest digest;
+        StringBuilder hexString = new StringBuilder();
+
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(hash.getBytes());
 
             for (byte hashByte : hashBytes) {
                 String hex = Integer.toHexString(0xff & hashByte);
@@ -79,6 +105,14 @@ public class Block {
         return owner;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getPlantacionInfos() {
+        return plantacionInfos;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -87,20 +121,20 @@ public class Block {
         return longitude;
     } 
 
-    public String getNewOwner() {
-        return newOwner;
+    public String getinfos() {
+        return infos;
     }
 
-    public void setNewOwner(String newOwner) {
-        this.newOwner = newOwner;
+    public void setinfos(String infos) {
+        this.infos = infos;
     }
 
     public String imprimirBloco() {
 
         if (getPreviousHash() == "0") {
-            return "Bloco Gênesis :\nnewOwner e Hora: " + getFormattedTimestamp() + "\nProprietário(a): " + getOwner() + "\nLatitude: " +   getLatitude() + "\nLongitude: " + getLongitude() + "\nHash: " + getHash() + "\n";
+            return "Bloco Gênesis :\nData e Hora: " + getFormattedTimestamp() + "\nProprietário(a): " + getOwner() + "\nCPF do(a) proprietário(a): " + getCpf() + "\nLatitude: " +   getLatitude() + "\nLongitude: " + getLongitude() + "\nInformações da plantação: " + getPlantacionInfos() + "\nHash: " + getHash() + "\n";
         }else {
-            return "Bloco " + getIndex() + ":\nnewOwner e Hora: " + getFormattedTimestamp() + "\nResponsável: " + getNewOwner() +"\nHash anterior: "
+            return "Bloco " + getIndex() + ":\nData e Hora: " + getFormattedTimestamp() + "\nInformações: " + getinfos() +"\nHash anterior: "
                 + getPreviousHash() + "\nHash: " + getHash() + "\n";
         }
     }
