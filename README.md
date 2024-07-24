@@ -1,4 +1,4 @@
-# cacauLote_BLockchain
+# cacaulote-blockchain
 
 //para entrar na vm
 ssh -i cacau_lote.pem azureuser@40.114.43.74
